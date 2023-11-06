@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeVC" customModule="Efficient_Weather" customModuleProvider="target">
             <connections>
                 <outlet property="heightForecast" destination="lq7-d1-MAb" id="ccf-Gc-kZ9"/>
+                <outlet property="ivBackground" destination="VBw-hj-fae" id="uDy-go-SDb"/>
                 <outlet property="lblCity" destination="aNX-l6-07C" id="Ba7-PQ-N6g"/>
                 <outlet property="lblDesc" destination="dje-nT-zti" id="tYp-U2-kbU"/>
                 <outlet property="lblFeelsLike" destination="FDZ-vh-EUc" id="Fwd-1R-Agm"/>
@@ -38,8 +40,9 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_day_bg" translatesAutoresizingMaskIntoConstraints="NO" id="VBw-hj-fae">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_bg" translatesAutoresizingMaskIntoConstraints="NO" id="VBw-hj-fae">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" name="transparentOverlay"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EK9-7X-Nio">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -60,7 +63,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kdz-kl-8TY">
                                                     <rect key="frame" x="0.0" y="0.0" width="374" height="257.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yangon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNX-l6-07C">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yangon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="32" translatesAutoresizingMaskIntoConstraints="NO" id="aNX-l6-07C">
                                                             <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="40"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -342,8 +345,8 @@
     <resources>
         <image name="calendar" catalog="system" width="128" height="107"/>
         <image name="eye" catalog="system" width="128" height="79"/>
+        <image name="home_bg" width="500" height="1029.5"/>
         <image name="humidity" catalog="system" width="128" height="96"/>
-        <image name="img_day_bg" width="644.5" height="1091"/>
         <image name="map" catalog="system" width="128" height="112"/>
         <image name="thermometer.low" catalog="system" width="80" height="128"/>
         <image name="wind" catalog="system" width="128" height="103"/>

@@ -27,6 +27,7 @@ class HomeViewModel: BaseViewModel {
         self.weatherModel = weatherModel
     }
     
+    //MARK: - Init Observers
     func initObservers() {
         Observable.combineLatest(currentWeather, forecastList)
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
@@ -45,10 +46,15 @@ class HomeViewModel: BaseViewModel {
                 
                 self.homeItems.accept(items)
                 
+                stopLoading()
+                
             }.disposed(by: disposeBag)
     }
     
+    //MARK: - Fetch Data
     func fetchAllData() {
+        
+        startLoading()
         
         fetchCurrentWeather(lat: 16.8050152422854, lon: 96.13827618458163)
         
@@ -65,7 +71,8 @@ class HomeViewModel: BaseViewModel {
                 self.currentWeather.accept(response)
         }, onError: {[weak self] error in
             guard let self = self else { return }
-            debugPrint("Handle error here \(error)")
+            self.handleError(error: error)
+            self.stopLoading()
         }).disposed(by: disposeBag)
     }
     
@@ -78,15 +85,16 @@ class HomeViewModel: BaseViewModel {
                 self.forecastList.accept(mappedForecastList)
             }, onError: {[weak self] error in
                 guard let self = self else { return }
-                debugPrint("Handle error here \(error)")
+                self.handleError(error: error)
+                self.stopLoading()
             }).disposed(by: disposeBag)
     }
     
+    //MARK: - Data Mapping logic
     private func mapForecastList(_ forecasts: [WeatherForecastVO]) -> [(String, [WeatherForecastVO])] {
         // Step 1: Extract unique date strings from notis
         let dateStrings: [String] = forecasts.compactMap { $0.forecastDate }.uniques
 
-        debugPrint("Date bug strings \(dateStrings)")
         // Step 2: Group forecasts by date
         let groupedForecasts: [(Date, [WeatherForecastVO])] = dateStrings.compactMap { dateString in
             let date = dateString.toDate(format: .type3) ?? Date()
@@ -99,15 +107,15 @@ class HomeViewModel: BaseViewModel {
         
         // Step 4: Format and add "Today" if applicable
         let output: [(String, [WeatherForecastVO])] = sortedGroupedForecasts.map { date, forecastsForDate in
-            debugPrint("Date bug output list date \((date).toString(format: .type3))")
             let isToday = date.toString(format: .type3) == Date().toString(format: .type3)
-            debugPrint("Date bug is today is \(isToday)")
             let title: String = isToday ? "Today" : date.toString(format: .type7) ?? ""
             return (title, forecastsForDate)
         }
         return output
     }
     
+    
+    //MARK: - Get Methods
     func getPlace() -> PlaceVO? {
         return Preference.getPlaceInfo()
     }
@@ -150,6 +158,10 @@ class HomeViewModel: BaseViewModel {
         return currentWeather.value?.city ?? ""
     }
     
+    func getIcon() -> String {
+        return currentWeather.value?.icon ?? ""
+    }
+    
     func getForecastCount() -> Int {
         return forecastList.value.count
     }
@@ -165,7 +177,4 @@ class HomeViewModel: BaseViewModel {
     func getforecastList(by index: Int) -> [WeatherForecastVO] {
         return forecastList.value[index].1
     }
-    
-    
-    
 }

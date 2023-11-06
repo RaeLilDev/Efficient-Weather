@@ -12,7 +12,6 @@ target 'Efficient-Weather' do
   pod 'Wormholy'
   pod 'RealmSwift', '~>10'
   pod "RxRealm"
-  pod 'GoogleMaps'
 
   post_install do |pi|
     pi.pods_project.targets.each do |t|

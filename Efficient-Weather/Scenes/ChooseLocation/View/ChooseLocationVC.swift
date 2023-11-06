@@ -25,24 +25,36 @@ class ChooseLocationVC: BaseVC {
         setupView()
         setupGestureRecognizers()
         bindData()
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        manager.desiredAccuracy = kCLLocationAccuracyBest //battery
+        manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.delegate = self
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         bindMapView()
     }
     
+    //MARK: - Setup View
     private func setupView() {
         btnChoosePlace.layer.cornerRadius = 8.0
         enableBtnChoosePlace(false)
     }
     
+    private func setupGestureRecognizers() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        mapView.isUserInteractionEnabled = true
+        mapView.addGestureRecognizer(tapGesture)
+    }
+    
+    func enableBtnChoosePlace(_ state: Bool) {
+        btnChoosePlace.isEnabled = state
+        btnChoosePlace.alpha = state ? 1.0 : 0.5
+    }
+    
+    //MARK: - Bind Data
     private func bindData() {
         viewModel.newPlace
             .skip(while: {$0 == nil})
@@ -60,12 +72,7 @@ class ChooseLocationVC: BaseVC {
         }
     }
 
-    private func setupGestureRecognizers() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        mapView.isUserInteractionEnabled = true
-        mapView.addGestureRecognizer(tapGesture)
-    }
-
+    //MARK: - OnTap Callbacks
     @objc private func handleTap(gestureReconizer: UITapGestureRecognizer) {
         let location = gestureReconizer.location(in: mapView)
         let coordinate = mapView.convert(location,toCoordinateFrom: mapView)
@@ -85,7 +92,6 @@ extension ChooseLocationVC: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             manager.stopUpdatingLocation()
-            debugPrint("Location is \(location)")
             if viewModel.noPlaceExists() {
                 render(location)
             }
@@ -110,7 +116,6 @@ extension ChooseLocationVC: CLLocationManagerDelegate {
     }
     
     private func setAnnotation(with coordinate: CLLocationCoordinate2D) {
-        // Add annotation:
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         
@@ -123,9 +128,5 @@ extension ChooseLocationVC: CLLocationManagerDelegate {
         mapView.addAnnotation(annotation)
     }
     
-    func enableBtnChoosePlace(_ state: Bool) {
-        btnChoosePlace.isEnabled = state
-        btnChoosePlace.alpha = state ? 1.0 : 0.5
-    }
 }
 

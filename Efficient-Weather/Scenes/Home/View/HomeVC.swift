@@ -28,6 +28,7 @@ class HomeVC: BaseVC {
     @IBOutlet weak var heightForecast: NSLayoutConstraint!
     @IBOutlet weak var viewLocation: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var ivBackground: UIImageView!
     
     var viewModel: HomeViewModel!
     
@@ -45,7 +46,7 @@ class HomeVC: BaseVC {
         viewModel.initObservers()
         setupGestureRecognizer()
     }
-    
+    //MARK: - Setup View
     private func setupView() {
         viewForecast.layer.cornerRadius = 16.0
         viewFeelsLike.layer.cornerRadius = 16.0
@@ -74,6 +75,7 @@ class HomeVC: BaseVC {
         viewLocation.addGestureRecognizer(tapLocation)
     }
     
+    //MARK: - Bind Data
     private func observeData() {
         viewModel.homeItems.subscribe(onNext: {[weak self] data in
                 guard let self = self else { return }
@@ -101,6 +103,7 @@ class HomeVC: BaseVC {
         tableViewForecast.reloadData()
     }
     
+    //MARK: - Action Callbacks
     @objc private func onTapLocation() {
         presentChooseLocationVC()
     }
@@ -110,6 +113,8 @@ class HomeVC: BaseVC {
         refreshControl.endRefreshing()
     }
     
+    
+    //MARK: - Routers
     private func presentChooseLocationVC() {
         let vc = ChooseLocationVC()
         vc.viewModel = ChooseLocationViewModel(placeModel: PlaceModelImpl.shared, selectedPlace: viewModel.getPlace())
@@ -123,7 +128,20 @@ class HomeVC: BaseVC {
         }
         present(vc)
     }
-
+    
+    private func presentForecastDetail(_ day: String, _ forecastList: [WeatherForecastVO]) {
+        let vc = ForecastDetailVC()
+        vc.viewModel = ForecastDetailViewModel(day: day, forecastList: forecastList)
+        if #available(iOS 15.0, *) {
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersGrabberVisible = true
+            }
+        } else {
+            vc.modalPresentationStyle = .overCurrentContext
+        }
+        present(vc)
+    }
 }
 
 //MARK: - TableView Datasource
@@ -154,17 +172,5 @@ extension HomeVC: UITableViewDelegate {
         viewLocation.backgroundColor = showLocationBg ? .black : .clear
     }
     
-    private func presentForecastDetail(_ day: String, _ forecastList: [WeatherForecastVO]) {
-        let vc = ForecastDetailVC()
-        vc.viewModel = ForecastDetailViewModel(day: day, forecastList: forecastList)
-        if #available(iOS 15.0, *) {
-            if let sheet = vc.sheetPresentationController {
-                sheet.detents = [.large()]
-                sheet.prefersGrabberVisible = true
-            }
-        } else {
-            vc.modalPresentationStyle = .overCurrentContext
-        }
-        present(vc)
-    }
+    
 }

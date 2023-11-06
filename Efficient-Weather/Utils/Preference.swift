@@ -11,10 +11,8 @@ enum PreferenceKeys: String {
     case placeInfo
 }
 
-
 class Preference {
     
-    // UserInfo
     static func savePlaceInfo(_ placeInfo: PlaceVO) {
         do {
             try UserDefaults.standard.setObject(placeInfo, forKey: PreferenceKeys.placeInfo.rawValue)

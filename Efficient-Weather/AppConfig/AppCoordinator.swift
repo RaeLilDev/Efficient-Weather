@@ -31,7 +31,7 @@ class AppCoordinator {
     func restart() {
         let vc = HomeVC()
         vc.viewModel = HomeViewModel(weatherModel: WeatherModelImpl.shared)
-        UIWindow.switchRootView(vc)
+        UIWindow.switchRootView(UINavigationController(rootViewController: vc))
     }
     
     

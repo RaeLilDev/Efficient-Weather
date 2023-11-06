@@ -11,8 +11,6 @@ enum ApiError: Error {
     
     case noConnection
     
-    case sessionExpired
-    
     case decodingError(Int)
     
     case serverError(String)
@@ -21,13 +19,10 @@ enum ApiError: Error {
     
     case requestCancel
     
-    
     var description: String {
         switch self {
         case .noConnection:
             return "No Connection."
-        case .sessionExpired:
-            return "Session Expired."
         case .decodingError(let code):
             return "StatusCode: \(code) - An error occurs in decoding."
         case .serverError(let code):

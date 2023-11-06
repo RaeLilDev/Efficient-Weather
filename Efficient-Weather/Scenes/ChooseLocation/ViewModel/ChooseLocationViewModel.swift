@@ -25,16 +25,19 @@ class ChooseLocationViewModel: BaseViewModel {
     }
     
     func fetchPlace() {
+        startLoading()
         placeModel.getPlace(lat: selectedLat ?? 0.0, lon: selectedLon ?? 0.0)
             .subscribe(onNext: {[weak self] data in
                 guard let self = self else { return }
                 if let result = data.first {
                     Preference.savePlaceInfo(result)
                     self.newPlace.accept(result)
+                    self.stopLoading()
                 }
             }, onError: {[weak self] error in
                 guard let self = self else { return }
-                debugPrint("Handle error \(error)")
+                self.stopLoading()
+                self.handleError(error: error)
             }).disposed(by: disposeBag)
     }
     
