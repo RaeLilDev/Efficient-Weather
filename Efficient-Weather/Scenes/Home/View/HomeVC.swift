@@ -26,8 +26,12 @@ class HomeVC: BaseVC {
     @IBOutlet weak var viewVisibility: UIStackView!
     @IBOutlet weak var tableViewForecast: UITableView!
     @IBOutlet weak var heightForecast: NSLayoutConstraint!
+    @IBOutlet weak var viewLocation: UIStackView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var viewModel: HomeViewModel!
+    
+    private let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,9 +39,11 @@ class HomeVC: BaseVC {
         listen(for: viewModel)
         setupView()
         setupTableView()
+        setupRefreshControl()
         viewModel.fetchAllData()
         observeData()
         viewModel.initObservers()
+        setupGestureRecognizer()
     }
     
     private func setupView() {
@@ -46,17 +52,31 @@ class HomeVC: BaseVC {
         viewHumidity.layer.cornerRadius = 16.0
         viewWind.layer.cornerRadius = 16.0
         viewVisibility.layer.cornerRadius = 16.0
+        viewLocation.layer.cornerRadius = viewLocation.bounds.height / 2
     }
     
     private func setupTableView() {
         tableViewForecast.dataSource = self
+        tableViewForecast.delegate = self
+        scrollView.delegate = self
         tableViewForecast.registerCell(from: DailyForecastCell.self)
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        scrollView.addSubview(refreshControl)
+    }
+    
+    private func setupGestureRecognizer() {
+        let tapLocation = UITapGestureRecognizer(target: self, action: #selector(onTapLocation))
+        viewLocation.isUserInteractionEnabled = true
+        viewLocation.addGestureRecognizer(tapLocation)
     }
     
     private func observeData() {
         viewModel.homeItems.subscribe(onNext: {[weak self] data in
                 guard let self = self else { return }
-                debugPrint("Bind data is called")
                 self.bindData()
             }).disposed(by: disposeBag)
     }
@@ -80,9 +100,33 @@ class HomeVC: BaseVC {
         heightForecast.constant = CGFloat(rowCount * 49)
         tableViewForecast.reloadData()
     }
+    
+    @objc private func onTapLocation() {
+        presentChooseLocationVC()
+    }
+    
+    @objc private func refreshData() {
+        viewModel.fetchAllData()
+        refreshControl.endRefreshing()
+    }
+    
+    private func presentChooseLocationVC() {
+        let vc = ChooseLocationVC()
+        vc.viewModel = ChooseLocationViewModel(placeModel: PlaceModelImpl.shared, selectedPlace: viewModel.getPlace())
+        if #available(iOS 15.0, *) {
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersGrabberVisible = true
+            }
+        } else {
+            vc.modalPresentationStyle = .overCurrentContext
+        }
+        present(vc)
+    }
 
 }
 
+//MARK: - TableView Datasource
 extension HomeVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,6 +138,33 @@ extension HomeVC: UITableViewDataSource {
         cell.bind(with: viewModel.getDay(by: indexPath.row), data: viewModel.getForecast(by: indexPath.row))
         return cell
     }
+}
+
+//MARK: - TableView Delegate
+extension HomeVC: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let day = viewModel.getDay(by: indexPath.row)
+        let forecastList = viewModel.getforecastList(by: indexPath.row)
+        presentForecastDetail(day, forecastList)
+    }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let showLocationBg = scrollView.contentOffset.y >= 40.0
+        viewLocation.backgroundColor = showLocationBg ? .black : .clear
+    }
+    
+    private func presentForecastDetail(_ day: String, _ forecastList: [WeatherForecastVO]) {
+        let vc = ForecastDetailVC()
+        vc.viewModel = ForecastDetailViewModel(day: day, forecastList: forecastList)
+        if #available(iOS 15.0, *) {
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersGrabberVisible = true
+            }
+        } else {
+            vc.modalPresentationStyle = .overCurrentContext
+        }
+        present(vc)
+    }
 }

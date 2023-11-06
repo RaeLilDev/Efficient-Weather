@@ -108,7 +108,7 @@ class HomeViewModel: BaseViewModel {
         return output
     }
     
-    private func getPlace() -> PlaceVO? {
+    func getPlace() -> PlaceVO? {
         return Preference.getPlaceInfo()
     }
     
@@ -160,6 +160,10 @@ class HomeViewModel: BaseViewModel {
     
     func getDay(by index: Int) -> String {
         return forecastList.value[index].0
+    }
+    
+    func getforecastList(by index: Int) -> [WeatherForecastVO] {
+        return forecastList.value[index].1
     }
     
     

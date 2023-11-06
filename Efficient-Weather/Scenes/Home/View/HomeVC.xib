@@ -22,11 +22,13 @@
                 <outlet property="lblTemp" destination="OcS-5t-dBd" id="i7h-mJ-TeP"/>
                 <outlet property="lblVisibility" destination="Ch8-H2-lC8" id="EfI-Ym-29K"/>
                 <outlet property="lblWind" destination="XQs-7s-L9d" id="D5X-HM-A2v"/>
+                <outlet property="scrollView" destination="ebC-8t-p2Y" id="GYV-LL-t9V"/>
                 <outlet property="tableViewForecast" destination="80s-77-nFe" id="SOK-5M-JPv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewFeelsLike" destination="1sB-an-2r9" id="yNK-P4-0mA"/>
                 <outlet property="viewForecast" destination="fFQ-8Q-dIN" id="fyo-kM-KLP"/>
                 <outlet property="viewHumidity" destination="UFR-cW-oU7" id="Ghp-aQ-0QB"/>
+                <outlet property="viewLocation" destination="FWo-fw-4HE" id="obC-1F-52D"/>
                 <outlet property="viewVisibility" destination="wG5-bl-5hC" id="GDf-dW-LGY"/>
                 <outlet property="viewWind" destination="ZDi-kK-OkO" id="uKj-Tw-pbS"/>
             </connections>
@@ -301,10 +303,25 @@
                         <constraint firstItem="ebC-8t-p2Y" firstAttribute="leading" secondItem="N8o-cD-ECv" secondAttribute="leading" id="wVl-IM-u3u"/>
                     </constraints>
                 </view>
+                <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="FWo-fw-4HE">
+                    <rect key="frame" x="350" y="48" width="48" height="48"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="YWa-gm-VVN">
+                            <rect key="frame" x="8" y="8.5" width="32" height="30.5"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="IOw-UK-BOg"/>
+                                <constraint firstAttribute="height" constant="32" id="ZW4-lH-a9Y"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="FWo-fw-4HE" firstAttribute="top" secondItem="N8o-cD-ECv" secondAttribute="top" constant="48" id="0Rt-AU-8Jd"/>
                 <constraint firstItem="VBw-hj-fae" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="2r7-Vi-plA"/>
                 <constraint firstAttribute="bottom" secondItem="N8o-cD-ECv" secondAttribute="bottom" id="Dfz-14-Bbv"/>
                 <constraint firstItem="EK9-7X-Nio" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="UZl-by-hiJ"/>
@@ -315,6 +332,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="N8o-cD-ECv" secondAttribute="trailing" id="lh2-ma-IA2"/>
                 <constraint firstItem="VBw-hj-fae" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nfX-kK-QGh"/>
                 <constraint firstItem="N8o-cD-ECv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="nt7-hh-vdV"/>
+                <constraint firstItem="FWo-fw-4HE" firstAttribute="trailing" secondItem="N8o-cD-ECv" secondAttribute="trailing" constant="-16" id="sh9-at-bog"/>
                 <constraint firstItem="N8o-cD-ECv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="yrv-Sx-OeZ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="VBw-hj-fae" secondAttribute="trailing" id="zdh-jY-ki4"/>
             </constraints>
@@ -326,6 +344,7 @@
         <image name="eye" catalog="system" width="128" height="79"/>
         <image name="humidity" catalog="system" width="128" height="96"/>
         <image name="img_day_bg" width="644.5" height="1091"/>
+        <image name="map" catalog="system" width="128" height="112"/>
         <image name="thermometer.low" catalog="system" width="80" height="128"/>
         <image name="wind" catalog="system" width="128" height="103"/>
         <namedColor name="cardOverlay">

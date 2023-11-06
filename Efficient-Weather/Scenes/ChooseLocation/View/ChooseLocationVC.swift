@@ -25,6 +25,7 @@ class ChooseLocationVC: BaseVC {
         setupView()
         setupGestureRecognizers()
         bindData()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -34,6 +35,7 @@ class ChooseLocationVC: BaseVC {
         manager.delegate = self
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
+        bindMapView()
     }
     
     private func setupView() {
@@ -45,9 +47,17 @@ class ChooseLocationVC: BaseVC {
         viewModel.newPlace
             .skip(while: {$0 == nil})
             .subscribe(onNext: {[weak self] data in
-                guard let self = self else { return }
+                guard let _ = self else { return }
                 AppCoordinator.shared.restart()
         }).disposed(by: disposeBag)
+    }
+    
+    private func bindMapView() {
+        if !viewModel.noPlaceExists() {
+            let coordinate = CLLocationCoordinate2D(latitude: viewModel.getSelectedPlaceLat(), longitude: viewModel.getSelectedPlaceLon())
+            setRegion(coordinate)
+            setAnnotation(with: coordinate)
+        }
     }
 
     private func setupGestureRecognizers() {
@@ -69,7 +79,7 @@ class ChooseLocationVC: BaseVC {
 
 }
 
-
+//MARK: - Location Manager Delegate
 extension ChooseLocationVC: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -86,16 +96,17 @@ extension ChooseLocationVC: CLLocationManagerDelegate {
         
         let coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
                                                 longitude: location.coordinate.longitude)
-        
-        let span = MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025)
-        
-        let region = MKCoordinateRegion(center: location.coordinate,
-                      span: span)
-        
-        mapView.setRegion(region, animated: true)
+        setRegion(coordinate)
         
         setAnnotation(with: coordinate)
         
+    }
+    
+    private func setRegion(_ coordinate: CLLocationCoordinate2D) {
+        let span = MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025)
+        let region = MKCoordinateRegion(center: coordinate,
+                      span: span)
+        mapView.setRegion(region, animated: true)
     }
     
     private func setAnnotation(with coordinate: CLLocationCoordinate2D) {
@@ -105,14 +116,11 @@ extension ChooseLocationVC: CLLocationManagerDelegate {
         
         viewModel.updateLocation(lat: Double(coordinate.latitude), lon: Double(coordinate.longitude))
         enableBtnChoosePlace(true)
-        debugPrint("Coordinate is \(coordinate)")
         
-        debugPrint("Annotation count is \(mapView.annotations.count)")
         if mapView.annotations.count >= 1 {
             mapView.removeAnnotation(mapView.annotations.last!)
-            debugPrint("Remove annotation")
         }
-        mapView.addAnnotation(annotation) // add annotaion pin on the map
+        mapView.addAnnotation(annotation)
     }
     
     func enableBtnChoosePlace(_ state: Bool) {

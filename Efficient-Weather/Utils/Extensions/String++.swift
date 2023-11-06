@@ -12,7 +12,7 @@ enum DateFormat: String {
     case type2 = "MMM dd, yyyy"
     case type3 = "yyyy-MM-dd"
     case type4 = "MMMM dd, yyyy"
-    case type5 = "h:mm a"
+    case type5 = "hh:mm a"
     case type6 = "yyyy-MM-dd h:mm a"
     case type7 = "E"
 }

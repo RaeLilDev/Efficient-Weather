@@ -19,8 +19,9 @@ class ChooseLocationViewModel: BaseViewModel {
     private var selectedLat: Double?
     private var selectedLon: Double?
     
-    init(placeModel: PlaceModel) {
+    init(placeModel: PlaceModel, selectedPlace: PlaceVO? = nil) {
         self.placeModel = placeModel
+        self.selectedPlace = selectedPlace
     }
     
     func fetchPlace() {
@@ -40,6 +41,14 @@ class ChooseLocationViewModel: BaseViewModel {
     func updateLocation(lat: Double, lon: Double) {
         selectedLat = lat
         selectedLon = lon
+    }
+    
+    func getSelectedPlaceLat() -> Double {
+        return selectedPlace?.lat ?? 0.0
+    }
+    
+    func getSelectedPlaceLon() -> Double {
+        return selectedPlace?.lon ?? 0.0
     }
     
     func noPlaceExists() -> Bool {
