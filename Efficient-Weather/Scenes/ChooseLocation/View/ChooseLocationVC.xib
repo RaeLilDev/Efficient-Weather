@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Map view configurations" minToolsVersion="14.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChooseLocationVC" customModule="Efficient_Weather" customModuleProvider="target">
+            <connections>
+                <outlet property="btnChoosePlace" destination="fxv-Fi-taf" id="6eO-Fj-bjt"/>
+                <outlet property="mapView" destination="jzR-d2-J7R" id="2g8-LB-S6n"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsUserLocation="YES" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jzR-d2-J7R">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <standardMapConfiguration key="preferredConfiguration"/>
+                </mapView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxv-Fi-taf">
+                    <rect key="frame" x="20" y="808" width="374" height="48"/>
+                    <color key="backgroundColor" systemColor="systemBlueColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="yGg-NT-45e"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="CHOOSE PLACE"/>
+                    <connections>
+                        <action selector="onTapChoosePlace:" destination="-1" eventType="touchUpInside" id="U6v-aq-5SX"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="fxv-Fi-taf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="BVq-Fm-YO9"/>
+                <constraint firstAttribute="bottom" secondItem="jzR-d2-J7R" secondAttribute="bottom" id="DSw-yQ-Vch"/>
+                <constraint firstItem="jzR-d2-J7R" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FCa-lr-6eq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fxv-Fi-taf" secondAttribute="trailing" constant="20" id="H8i-AD-Ojr"/>
+                <constraint firstAttribute="bottom" secondItem="fxv-Fi-taf" secondAttribute="bottom" constant="40" id="PJq-AI-Hfr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jzR-d2-J7R" secondAttribute="trailing" id="pMC-jx-WmV"/>
+                <constraint firstItem="jzR-d2-J7R" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="t6q-ej-6Rj"/>
+            </constraints>
+            <point key="canvasLocation" x="-11" y="20"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
