@@ -1,0 +1,6 @@
+# Pods
+Pods/
+# Ignore the workspace file created by CocoaPods
+*.xcworkspace
+# Ignore lock file for pods
+Podfile.lock
